@@ -28,49 +28,23 @@ public class Main {
 
             userAnswer = scanner.nextInt();
 
-            if (userAnswer == 0) {
-                break;
-            }
+            if (userAnswer == 0) break;
 
             switch (userAnswer) {
                 case 1:
-                    SmsMessage smsMessage = new SmsMessage();
-                    System.out.print("Enter source phone : ");
-                    source = scanner.next();
-                    smsMessage.setSourcePhoneNumber(source);
-                    System.out.print("Enter target phone : ");
-                    target = scanner.next();
-                    smsMessage.setTargetPhoneNumber(target);
-                    System.out.println("Write Your Message : ");
-                    content = scanner.next(".*$");
-                    smsMessage.setContent(content);
-                    message = smsMessage;
+                    SmsMessage sms = new SmsMessage();
+                    fillFields("phone", sms::setSourcePhoneNumber, sms::setTargetPhoneNumber, sms::setContent, true);
+                    message = sms;
                     break;
                 case 2:
-                    EmailMessage emailMessage = new EmailMessage();
-                    System.out.print("Enter source email : ");
-                    source = scanner.next();
-                    emailMessage.setSourceEmailAddress(source);
-                    System.out.print("Enter target email : ");
-                    target = scanner.next();
-                    emailMessage.setTargetEmailAddress(target);
-                    System.out.println("Write Your Message : ");
-                    content = scanner.next();
-                    emailMessage.setContent(content);
-                    message = emailMessage;
+                    EmailMessage email = new EmailMessage();
+                    fillFields("email", email::setSourceEmailAddress, email::setTargetEmailAddress, email::setContent, false);
+                    message = email;
                     break;
                 case 3:
-                    TelegramMessage telegramMessage = new TelegramMessage();
-                    System.out.print("Enter source Telegram ID : ");
-                    source = scanner.next();
-                    telegramMessage.setSourceId(source);
-                    System.out.print("Enter target Telegram ID : ");
-                    target = scanner.next();
-                    telegramMessage.setTargetId(target);
-                    System.out.println("Write Your Message : ");
-                    content = scanner.next();
-                    telegramMessage.setContent(content);
-                    message = telegramMessage;
+                    TelegramMessage telegram = new TelegramMessage();
+                    fillFields("Telegram ID", telegram::setSourceId, telegram::setTargetId, telegram::setContent, false);
+                    message = telegram;
                     break;
             }
 
