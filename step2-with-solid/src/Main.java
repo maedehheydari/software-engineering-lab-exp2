@@ -17,9 +17,6 @@ public class Main {
         int userAnswer = 0;
         do {
             Message message = null;
-            String source;
-            String target;
-            String content;
 
             System.out.println("In order to send Sms message enter 1");
             System.out.println("In order to send Email message enter 2");
@@ -27,7 +24,6 @@ public class Main {
             System.out.println("In order to Exit, Enter 0");
 
             userAnswer = scanner.nextInt();
-
             if (userAnswer == 0) break;
 
             switch (userAnswer) {
@@ -48,16 +44,12 @@ public class Main {
                     break;
             }
 
-            if (message instanceof SmsMessage) {
-                ISmsMessageService smsService = MessageServiceFactory.createSmsService();
-                smsService.sendSmsMessage((SmsMessage) message);
-            } else if (message instanceof EmailMessage) {
-                IEmailMessageService emailService = MessageServiceFactory.createEmailService();
-                emailService.sendEmailMessage((EmailMessage) message);
-            } else if (message instanceof TelegramMessage) {
-                ITelegramMessageService telegramService = MessageServiceFactory.createTelegramService();
-                telegramService.sendTelegramMessage((TelegramMessage) message);
-            }
+            if (message instanceof SmsMessage)
+                MessageServiceFactory.createSmsService().sendSmsMessage((SmsMessage) message);
+            else if (message instanceof EmailMessage)
+                MessageServiceFactory.createEmailService().sendEmailMessage((EmailMessage) message);
+            else if (message instanceof TelegramMessage)
+                MessageServiceFactory.createTelegramService().sendTelegramMessage((TelegramMessage) message);
 
         } while (true);
     }
