@@ -7,13 +7,15 @@ import edu.sharif.selab.services.ISmsMessageService;
 import edu.sharif.selab.services.ITelegramMessageService;
 import edu.sharif.selab.services.MessageServiceFactory;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 public class Main {
     public static final Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         System.out.println("Hello and Welcome to SE Lab Messenger.");
-        int userAnswer=0;
-        do{
+        int userAnswer = 0;
+        do {
             Message message = null;
             String source;
             String target;
@@ -24,13 +26,13 @@ public class Main {
             System.out.println("In order to send Telegram message enter 3");
             System.out.println("In order to Exit, Enter 0");
 
-            userAnswer= scanner.nextInt();
+            userAnswer = scanner.nextInt();
 
-            if(userAnswer==0){
+            if (userAnswer == 0) {
                 break;
             }
 
-            switch (userAnswer){
+            switch (userAnswer) {
                 case 1:
                     SmsMessage smsMessage = new SmsMessage();
                     System.out.print("Enter source phone : ");
@@ -72,17 +74,36 @@ public class Main {
                     break;
             }
 
-            if(message instanceof SmsMessage){
+            if (message instanceof SmsMessage) {
                 ISmsMessageService smsService = MessageServiceFactory.createSmsService();
                 smsService.sendSmsMessage((SmsMessage) message);
-            }else if(message instanceof EmailMessage){
+            } else if (message instanceof EmailMessage) {
                 IEmailMessageService emailService = MessageServiceFactory.createEmailService();
                 emailService.sendEmailMessage((EmailMessage) message);
-            }else if(message instanceof TelegramMessage){
+            } else if (message instanceof TelegramMessage) {
                 ITelegramMessageService telegramService = MessageServiceFactory.createTelegramService();
                 telegramService.sendTelegramMessage((TelegramMessage) message);
             }
 
-        }while (true);
+        } while (true);
+    }
+
+    private static void fillFields(
+        String label,
+        Consumer<String> setSource,
+        Consumer<String> setTarget,
+        Consumer<String> setContent,
+        boolean useMultilineScanner
+    ) {
+        System.out.print("Enter source " + label + " : ");
+        setSource.accept(scanner.next());
+        System.out.print("Enter target " + label + " : ");
+        setTarget.accept(scanner.next());
+        System.out.println("Write Your Message : ");
+        if (useMultilineScanner) {
+            setContent.accept(scanner.next(".*$"));
+        } else {
+            setContent.accept(scanner.next());
+        }
     }
 }
